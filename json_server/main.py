@@ -1,9 +1,8 @@
 import click
 import json
-from flask import Flask
+from flask import Flask,make_response
 from flask.json import jsonify
 from flask_cors import CORS
-
 app = Flask(__name__)
 CORS(app)
 
@@ -14,8 +13,13 @@ def cli_command(filename, port):
 
     @app.route("/", methods=["GET"])
     def index():
-        with open(click.format_filename(filename)) as file:
-            contents = json.loads(file.read())
-        return jsonify(contents)
+        with open(click.format_filename(filename)) as f:
+            try:
+                contents = json.loads(f.read())
+            except json.JSONDecodeError as e:
+                return f"Invalid JSON\nError - {e}"
+            response = make_response((json.dumps(contents,indent=4)))
+            response.content_type = "application/json"
+            return response
 
     app.run(debug=True, port=port)
