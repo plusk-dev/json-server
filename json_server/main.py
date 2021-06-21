@@ -6,6 +6,10 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
+
+class InvalidJson(Exception):
+    pass
+
 @click.command()
 @click.argument('filename', type=click.Path(exists=True))
 @click.argument('port', default=5000)
@@ -17,7 +21,7 @@ def cli_command(filename, port):
             try:
                 contents = json.loads(f.read())
             except json.JSONDecodeError as e:
-                return f"Invalid JSON\nError - {e}"
+                raise InvalidJson("Enter a proper JSON file")
             response = make_response((json.dumps(contents,indent=4)))
             response.content_type = "application/json"
             return response
