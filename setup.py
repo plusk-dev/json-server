@@ -10,6 +10,10 @@ setup(
     include_package_data=True,
     long_description=long_description,
     long_description_content_type="text/markdown",
+    license="MIT",
+    classifiers = [
+        "License :: OSI Approved :: MIT License"
+    ],
     install_requires=[
         'click',
         'flask',

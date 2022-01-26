@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 import click
 import json
 from flask import Flask,make_response
